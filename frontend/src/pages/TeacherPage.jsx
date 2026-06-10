@@ -1,4 +1,4 @@
-import { Save } from "lucide-react";
+import { Save, ArrowUpDown, ArrowDown, ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "../api/client";
 import GradeTable from "../components/GradeTable";
@@ -17,19 +17,26 @@ const initialForm = {
   teacher: "",
 };
 
+const sortOptions = [
+  { value: "updated_at", label: "更新时间" },
+  { value: "course_name", label: "课程名称" },
+];
+
 export default function TeacherPage() {
   const [form, setForm] = useState(initialForm);
   const [grades, setGrades] = useState([]);
   const [notice, setNotice] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [sortBy, setSortBy] = useState("updated_at");
+  const [order, setOrder] = useState("desc");
 
   const loadGrades = async () => {
-    setGrades(await api.listGrades());
+    setGrades(await api.listGrades({ sortBy, order }));
   };
 
   useEffect(() => {
     loadGrades().catch((error) => setNotice({ type: "error", message: error.message }));
-  }, []);
+  }, [sortBy, order]);
 
   const updateField = (field, value) => {
     setForm((current) => ({ ...current, [field]: value }));
@@ -122,7 +129,28 @@ export default function TeacherPage() {
 
         <div className="panel">
           <div className="panel-head">
-            <h2>最近成绩</h2>
+            <h2>成绩列表</h2>
+            <div className="sort-controls">
+              <label className="sort-label">
+                排序方式
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                  {sortOptions.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <button
+                type="button"
+                className="sort-order-btn"
+                onClick={() => setOrder(order === "desc" ? "asc" : "desc")}
+                title={order === "desc" ? "降序" : "升序"}
+              >
+                {order === "desc" ? <ArrowDown size={18} /> : <ArrowUp size={18} />}
+                {order === "desc" ? "降序" : "升序"}
+              </button>
+            </div>
           </div>
           <GradeTable grades={grades} onScoreChange={changeScore} />
         </div>

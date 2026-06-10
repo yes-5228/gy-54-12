@@ -3,8 +3,16 @@ from ..models import Grade, Student
 from .gpa import calculate_summary
 
 
-def list_grades():
-    return Grade.query.order_by(Grade.updated_at.desc()).all()
+def list_grades(sort_by="updated_at", order="desc"):
+    sort_column = Grade.updated_at
+    if sort_by == "course_name":
+        sort_column = Grade.course_name
+    elif sort_by == "updated_at":
+        sort_column = Grade.updated_at
+
+    if order == "asc":
+        return Grade.query.order_by(sort_column.asc()).all()
+    return Grade.query.order_by(sort_column.desc()).all()
 
 
 def get_or_create_student(student_no, name, major="", class_name=""):

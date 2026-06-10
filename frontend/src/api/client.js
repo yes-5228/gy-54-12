@@ -18,7 +18,10 @@ async function request(path, options = {}) {
 
 export const api = {
   health: () => request("/health"),
-  listGrades: () => request("/grades"),
+  listGrades: (params = {}) => {
+    const query = new URLSearchParams(params).toString();
+    return request(`/grades${query ? `?${query}` : ""}`);
+  },
   createGrade: (payload) =>
     request("/grades", {
       method: "POST",

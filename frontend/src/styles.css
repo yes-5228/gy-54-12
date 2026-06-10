@@ -147,6 +147,43 @@ button:disabled {
   margin-bottom: 16px;
 }
 
+.sort-controls {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.sort-label {
+  align-items: center;
+  color: #475569;
+  display: flex;
+  font-size: 13px;
+  gap: 8px;
+  margin: 0;
+}
+
+.sort-label select {
+  min-height: 36px;
+  padding: 6px 10px;
+  width: auto;
+}
+
+.sort-order-btn {
+  align-items: center;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #334155;
+  display: inline-flex;
+  gap: 6px;
+  min-height: 36px;
+  padding: 6px 12px;
+}
+
+.sort-order-btn:hover {
+  background: #e2e8f0;
+}
+
 .split-grid {
   display: grid;
   gap: 22px;
@@ -423,5 +460,15 @@ blockquote {
   .search-bar,
   .form-grid {
     grid-template-columns: 1fr;
+  }
+
+  .panel-head {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .sort-controls {
+    flex-wrap: wrap;
   }
 }

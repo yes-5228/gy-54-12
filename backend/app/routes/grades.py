@@ -9,7 +9,13 @@ grades_bp = Blueprint("grades", __name__)
 
 @grades_bp.get("")
 def index():
-    return jsonify([grade.to_dict() for grade in list_grades()])
+    sort_by = request.args.get("sortBy", "updated_at")
+    order = request.args.get("order", "desc")
+    if sort_by not in ("updated_at", "course_name"):
+        sort_by = "updated_at"
+    if order not in ("asc", "desc"):
+        order = "desc"
+    return jsonify([grade.to_dict() for grade in list_grades(sort_by=sort_by, order=order)])
 
 
 @grades_bp.post("")
